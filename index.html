@@ -90,7 +90,7 @@
             text-transform: uppercase;
         }
 
-        .info-item input {
+        .info-item input, .info-item select {
             padding: 10px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
@@ -98,9 +98,34 @@
             font-family: inherit;
         }
 
-        .info-item input:focus {
+        .info-item input:focus, .info-item select:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        .confidence-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+
+        .confidence-high {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .confidence-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .confidence-low {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .section {
@@ -383,6 +408,35 @@
             color: #667eea;
         }
 
+        .calculation-note {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .calculation-note strong {
+            color: #333;
+        }
+
+        .warning-banner {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        .warning-banner strong {
+            color: #78350f;
+        }
+
         @media print {
             body {
                 background: white;
@@ -414,6 +468,10 @@
             .section-title {
                 font-size: 18px;
             }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -433,27 +491,34 @@
                 <div class="info-grid">
                     <div class="info-item">
                         <label>Brand Name</label>
-                        <input type="text" placeholder="Enter brand name">
+                        <input type="text" placeholder="Enter brand name" id="brandName">
                     </div>
                     <div class="info-item">
                         <label>Contact Person</label>
-                        <input type="text" placeholder="Enter name">
+                        <input type="text" placeholder="Enter name" id="contactPerson">
                     </div>
                     <div class="info-item">
                         <label>Audit Date</label>
-                        <input type="date">
+                        <input type="date" id="auditDate">
+                    </div>
+                    <div class="info-item">
+                        <label>Currency</label>
+                        <select id="currency">
+                            <option value="USD">USD ($)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
                     </div>
                     <div class="info-item">
                         <label>Email List Size</label>
-                        <input type="number" placeholder="0">
+                        <input type="number" placeholder="0" id="listSize">
                     </div>
                     <div class="info-item">
                         <label>Monthly Revenue</label>
-                        <input type="text" placeholder="$0">
+                        <input type="text" placeholder="0" id="monthlyRevenue">
                     </div>
                     <div class="info-item">
                         <label>Current Email Platform</label>
-                        <input type="text" placeholder="Klaviyo, Mailchimp, etc.">
+                        <input type="text" placeholder="Klaviyo, Mailchimp, etc." id="emailPlatform">
                     </div>
                 </div>
             </div>
@@ -472,7 +537,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Pop-up with real offer</div>
-                        <div class="item-description">Do they have a pop-up? Does it offer real value (10% off, free guide)?</div>
+                        <div class="item-description">Do you have a pop-up? Does it offer real value (10% off, free guide)?</div>
                     </div>
                 </div>
 
@@ -483,7 +548,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Product pages as lead magnets</div>
-                        <div class="item-description">Are there email capture forms on product pages?</div>
+                        <div class="item-description">Are there email capture forms on your product pages?</div>
                     </div>
                 </div>
 
@@ -494,7 +559,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Giveaways requiring email entry</div>
-                        <div class="item-description">Do they run contests/giveaways that collect emails?</div>
+                        <div class="item-description">Do you run contests/giveaways that collect emails?</div>
                     </div>
                 </div>
 
@@ -505,7 +570,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">QR codes on packaging/receipts</div>
-                        <div class="item-description">Are they using QR codes to capture emails offline?</div>
+                        <div class="item-description">Are you using QR codes to capture emails offline?</div>
                     </div>
                 </div>
 
@@ -516,7 +581,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Social DM-to-signup automation</div>
-                        <div class="item-description">Do they use "DM to join" tactics with automation (ManyChat)?</div>
+                        <div class="item-description">Do you use "DM to join" tactics with automation (ManyChat)?</div>
                     </div>
                 </div>
 
@@ -527,7 +592,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Pinned social post with freebie</div>
-                        <div class="item-description">Do they have a pinned post offering a lead magnet (guide, recipes)?</div>
+                        <div class="item-description">Do you have a pinned post offering a lead magnet (guide, recipes)?</div>
                     </div>
                 </div>
 
@@ -538,7 +603,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Email signature CTA</div>
-                        <div class="item-description">Does their team use email signatures with signup CTAs?</div>
+                        <div class="item-description">Does your team use email signatures with signup CTAs?</div>
                     </div>
                 </div>
             </div>
@@ -557,7 +622,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">"Meet the Maker" welcome email</div>
-                        <div class="item-description">Does the welcome series include personal story/founder intro?</div>
+                        <div class="item-description">Does your welcome series include personal story/founder intro?</div>
                     </div>
                 </div>
 
@@ -568,7 +633,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Email-only flash sales</div>
-                        <div class="item-description">Do they run exclusive promos for subscribers?</div>
+                        <div class="item-description">Do you run exclusive promos for subscribers?</div>
                     </div>
                 </div>
 
@@ -579,7 +644,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Content emails (Top 3 lists, pairings)</div>
-                        <div class="item-description">Do they send educational/content emails beyond promos?</div>
+                        <div class="item-description">Do you send educational/content emails beyond promos?</div>
                     </div>
                 </div>
 
@@ -590,7 +655,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Plain-text emails</div>
-                        <div class="item-description">Do they use personal, plain-text format sometimes?</div>
+                        <div class="item-description">Do you use personal, plain-text format sometimes?</div>
                     </div>
                 </div>
 
@@ -601,7 +666,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Smart P.S. with referral/social proof</div>
-                        <div class="item-description">Do emails have strategic P.S. lines?</div>
+                        <div class="item-description">Do your emails have strategic P.S. lines?</div>
                     </div>
                 </div>
             </div>
@@ -620,7 +685,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Abandoned cart email series</div>
-                        <div class="item-description">Do they have automated cart recovery? How many emails?</div>
+                        <div class="item-description">Do you have automated cart recovery? How many emails?</div>
                     </div>
                 </div>
 
@@ -631,7 +696,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Birthday email with discount</div>
-                        <div class="item-description">Do they automatically send birthday offers?</div>
+                        <div class="item-description">Do you automatically send birthday offers?</div>
                     </div>
                 </div>
 
@@ -642,7 +707,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Win-back email for lapsed customers</div>
-                        <div class="item-description">Do they have a re-engagement series for inactive subscribers?</div>
+                        <div class="item-description">Do you have a re-engagement series for inactive subscribers?</div>
                     </div>
                 </div>
 
@@ -653,7 +718,7 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Post-purchase thank you + referral</div>
-                        <div class="item-description">Do they have automated post-purchase emails with referral incentive?</div>
+                        <div class="item-description">Do you have automated post-purchase emails with referral incentive?</div>
                     </div>
                 </div>
             </div>
@@ -672,14 +737,17 @@
                     </div>
                     <div class="item-content">
                         <div class="item-title">Regular weekly email cadence</div>
-                        <div class="item-description">Do they send consistent weekly emails? What's the format?</div>
+                        <div class="item-description">Do you send consistent weekly emails? What's the format?</div>
                     </div>
                 </div>
             </div>
 
             <!-- SCORE SECTION -->
             <div class="score-section">
-                <h3 style="text-align: center; margin-bottom: 10px;">Audit Score</h3>
+                <h3 style="text-align: center; margin-bottom: 10px;">
+                    Audit Score
+                    <span class="confidence-badge" id="confidenceBadge" style="background: #e0e7ff; color: #3730a3;">Enter data</span>
+                </h3>
                 <div class="score-grid">
                     <div class="score-item">
                         <div class="score-value" id="totalScore">0/17</div>
@@ -704,26 +772,34 @@
                 </div>
             </div>
 
-            <!-- WHAT'S WORKING SECTION -->
+            <!-- WHAT'S WORKING -->
             <div class="whats-working" id="whatsWorking" style="display: none;">
-                <div class="working-header">✓ What's Already Working:</div>
+                <div class="working-header">What's Working</div>
                 <div class="working-list" id="workingList"></div>
             </div>
 
             <!-- RECOMMENDATIONS -->
             <div class="recommendations">
                 <div class="opportunity-callout">
-                    <div class="opportunity-label">Monthly Revenue You're Missing:</div>
+                    <div class="opportunity-label">Estimated Monthly Opportunity</div>
                     <div class="opportunity-amount" id="opportunityAmount">$0</div>
-                    <div class="opportunity-annual">($<span id="annualAmount">0</span> per year)</div>
+                    <div class="opportunity-annual"><span id="annualAmount">$0</span>/year potential</div>
                 </div>
-                
-                <div class="priority-header">What to fix first:</div>
+                <div class="priority-header">Priority Recommendations</div>
                 <div class="priority-list" id="recommendationsList">
-                    <div class="priority-item">Complete the audit above to see recommendations</div>
+                    <div class="priority-item">
+                        <div class="priority-text">Complete the audit to see recommendations</div>
+                    </div>
                 </div>
             </div>
 
+            <div id="warningBanner" style="display: none;"></div>
+
+            <div class="calculation-note">
+                <strong>Methodology:</strong> We estimate your current email performance based on your audit score, then compare it to conservative industry benchmarks for alcohol brands (20-30% of DTC revenue). The gap represents your improvement opportunity. Recommendations are allocated proportionally without double-counting. <strong>Note:</strong> These are directional estimates based on industry averages, not guarantees. Actual results vary by brand, market, and execution.
+            </div>
+
+            <!-- ACTION BUTTONS -->
             <div class="action-buttons">
                 <button class="btn btn-secondary" onclick="copyAuditSummary()">Copy Summary</button>
                 <button class="btn btn-secondary" onclick="downloadJSON()">Download JSON</button>
@@ -735,7 +811,16 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'email_audit_data';
+        const STORAGE_KEY = 'email_audit_data_v2';
+
+        // Currency symbols and conversion rates (for display purposes)
+        const CURRENCY_CONFIG = {
+            USD: { symbol: '$', position: 'before' },
+            GBP: { symbol: '£', position: 'before' }
+        };
+
+        // Set today's date by default
+        document.getElementById('auditDate').valueAsDate = new Date();
 
         // Load saved data on page load
         window.addEventListener('load', function() {
@@ -745,21 +830,35 @@
 
         // Auto-save and auto-calculate whenever any input changes
         document.addEventListener('change', function(e) {
-            if (e.target.matches('input[type="checkbox"], input[type="text"], input[type="number"], input[type="date"], textarea')) {
+            if (e.target.matches('input[type="checkbox"], input[type="text"], input[type="number"], input[type="date"], select, textarea')) {
                 saveAuditData();
-                calculateScore(); // Auto-calculate score on every change
+                calculateScore();
             }
         });
+
+        // Also listen to input events for real-time calculation
+        document.addEventListener('input', function(e) {
+            if (e.target.matches('input[type="number"], input[type="text"]')) {
+                calculateScore();
+            }
+        });
+
+        function formatCurrency(amount, currencyCode) {
+            const config = CURRENCY_CONFIG[currencyCode] || CURRENCY_CONFIG.USD;
+            const formatted = Math.round(amount).toLocaleString();
+            return config.position === 'before' ? `${config.symbol}${formatted}` : `${formatted}${config.symbol}`;
+        }
 
         function saveAuditData() {
             const data = {
                 clientInfo: {
-                    brandName: document.querySelector('input[placeholder="Enter brand name"]').value,
-                    contactPerson: document.querySelector('input[placeholder="Enter name"]').value,
-                    auditDate: document.querySelector('input[type="date"]').value,
-                    emailListSize: document.querySelector('input[placeholder="0"]').value,
-                    monthlyRevenue: document.querySelector('input[placeholder="$0"]').value,
-                    emailPlatform: document.querySelector('input[placeholder="Klaviyo, Mailchimp, etc."]').value
+                    brandName: document.getElementById('brandName').value,
+                    contactPerson: document.getElementById('contactPerson').value,
+                    auditDate: document.getElementById('auditDate').value,
+                    currency: document.getElementById('currency').value,
+                    emailListSize: document.getElementById('listSize').value,
+                    monthlyRevenue: document.getElementById('monthlyRevenue').value,
+                    emailPlatform: document.getElementById('emailPlatform').value
                 },
                 checkboxes: Array.from(document.querySelectorAll('input[type="checkbox"]')).map(cb => cb.checked),
                 timestamp: new Date().toISOString()
@@ -777,13 +876,13 @@
                 const data = JSON.parse(saved);
                 
                 // Load client info
-                const inputs = document.querySelectorAll('.client-info input');
-                if (data.clientInfo.brandName) inputs[0].value = data.clientInfo.brandName;
-                if (data.clientInfo.contactPerson) inputs[1].value = data.clientInfo.contactPerson;
-                if (data.clientInfo.auditDate) inputs[2].value = data.clientInfo.auditDate;
-                if (data.clientInfo.emailListSize) inputs[3].value = data.clientInfo.emailListSize;
-                if (data.clientInfo.monthlyRevenue) inputs[4].value = data.clientInfo.monthlyRevenue;
-                if (data.clientInfo.emailPlatform) inputs[5].value = data.clientInfo.emailPlatform;
+                if (data.clientInfo.brandName) document.getElementById('brandName').value = data.clientInfo.brandName;
+                if (data.clientInfo.contactPerson) document.getElementById('contactPerson').value = data.clientInfo.contactPerson;
+                if (data.clientInfo.auditDate) document.getElementById('auditDate').value = data.clientInfo.auditDate;
+                if (data.clientInfo.currency) document.getElementById('currency').value = data.clientInfo.currency;
+                if (data.clientInfo.emailListSize) document.getElementById('listSize').value = data.clientInfo.emailListSize;
+                if (data.clientInfo.monthlyRevenue) document.getElementById('monthlyRevenue').value = data.clientInfo.monthlyRevenue;
+                if (data.clientInfo.emailPlatform) document.getElementById('emailPlatform').value = data.clientInfo.emailPlatform;
 
                 // Load checkboxes
                 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -807,8 +906,9 @@
         }
 
         function copyAuditSummary() {
-            const brandName = document.querySelector('input[placeholder="Enter brand name"]').value || 'Client';
-            const auditDate = document.querySelector('input[type="date"]').value || new Date().toISOString().split('T')[0];
+            const currency = document.getElementById('currency').value;
+            const brandName = document.getElementById('brandName').value || 'Client';
+            const auditDate = document.getElementById('auditDate').value || new Date().toISOString().split('T')[0];
             const totalScore = document.getElementById('totalScore').textContent;
             const listScore = document.getElementById('listScore').textContent;
             const tacticsScore = document.getElementById('tacticsScore').textContent;
@@ -823,6 +923,7 @@
 
             const summary = `${brandName} - Email Audit Results
 Date: ${auditDate}
+Currency: ${currency}
 
 SCORES:
 Total: ${totalScore}
@@ -833,13 +934,14 @@ Total: ${totalScore}
 
 OPPORTUNITY:
 Monthly: ${opportunity}
-Annual: ($${annual})
+Annual: ${annual}
 
 TOP PRIORITIES:
 ${recommendations}
 
 ---
-Generated by CRO28 Email Audit Tool`;
+Generated by CRO28 Email Audit Tool
+Note: Estimates based on conservative industry benchmarks`;
 
             navigator.clipboard.writeText(summary).then(() => {
                 showSaveStatus('✓ Summary copied to clipboard!');
@@ -850,7 +952,8 @@ Generated by CRO28 Email Audit Tool`;
         }
 
         function downloadJSON() {
-            const brandName = document.querySelector('input[placeholder="Enter brand name"]').value || 'Client';
+            const brandName = document.getElementById('brandName').value || 'Client';
+            const currency = document.getElementById('currency').value;
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
             const listCheckboxes = Array.from(allCheckboxes).slice(0, 7);
             const tacticsCheckboxes = Array.from(allCheckboxes).slice(7, 12);
@@ -860,13 +963,15 @@ Generated by CRO28 Email Audit Tool`;
             const data = {
                 brand: brandName,
                 date: new Date().toISOString(),
+                currency: currency,
                 clientInfo: {
-                    brandName: document.querySelector('input[placeholder="Enter brand name"]').value,
-                    contactPerson: document.querySelector('input[placeholder="Enter name"]').value,
-                    auditDate: document.querySelector('input[type="date"]').value,
-                    emailListSize: document.querySelector('input[placeholder="0"]').value,
-                    monthlyRevenue: document.querySelector('input[placeholder="$0"]').value,
-                    emailPlatform: document.querySelector('input[placeholder="Klaviyo, Mailchimp, etc."]').value
+                    brandName: document.getElementById('brandName').value,
+                    contactPerson: document.getElementById('contactPerson').value,
+                    auditDate: document.getElementById('auditDate').value,
+                    currency: currency,
+                    emailListSize: document.getElementById('listSize').value,
+                    monthlyRevenue: document.getElementById('monthlyRevenue').value,
+                    emailPlatform: document.getElementById('emailPlatform').value
                 },
                 scores: {
                     total: listCheckboxes.filter(cb => cb.checked).length + tacticsCheckboxes.filter(cb => cb.checked).length + automationCheckboxes.filter(cb => cb.checked).length + consistencyCheckboxes.filter(cb => cb.checked).length,
@@ -897,7 +1002,8 @@ Generated by CRO28 Email Audit Tool`;
                         item: cb.parentElement.parentElement.querySelector('.item-title').textContent,
                         checked: cb.checked
                     }))
-                }
+                },
+                disclaimer: "Estimates based on conservative industry benchmarks. Actual results vary by brand."
             };
 
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -912,25 +1018,80 @@ Generated by CRO28 Email Audit Tool`;
             
             showSaveStatus('✓ JSON downloaded!');
         }
-        // Auto-calculate score when checkboxes change
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', calculateScore);
-        });
+
+        function getTotalScore() {
+            return Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(cb => cb.checked).length;
+        }
+
+        function getListScore() {
+            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).slice(0, 7);
+            return checkboxes.filter(cb => cb.checked).length;
+        }
+
+        function getTacticsScore() {
+            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).slice(7, 12);
+            return checkboxes.filter(cb => cb.checked).length;
+        }
+
+        function getAutomationScore() {
+            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).slice(12, 16);
+            return checkboxes.filter(cb => cb.checked).length;
+        }
+
+        function getConsistencyScore() {
+            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).slice(16, 17);
+            return checkboxes.filter(cb => cb.checked).length;
+        }
+
+        function parseRevenue(revenueString) {
+            if (!revenueString) return 0;
+            return parseFloat(revenueString.replace(/[£$,]/g, '')) || 0;
+        }
+
+        function validateInputs(listSize, monthlyRevenue) {
+            const warnings = [];
+            
+            // Check for unrealistic revenue per subscriber
+            if (listSize > 0 && monthlyRevenue > 0) {
+                const revenuePerSub = monthlyRevenue / listSize;
+                
+                // Flag if revenue per subscriber is extremely high (over $50/month)
+                if (revenuePerSub > 50) {
+                    warnings.push("Revenue per subscriber seems unusually high. Please verify your monthly revenue figure.");
+                }
+                
+                // Flag if revenue per subscriber is extremely low (under $0.10/month)
+                if (revenuePerSub < 0.1) {
+                    warnings.push("Revenue per subscriber seems unusually low. This may indicate email isn't being tracked properly.");
+                }
+            }
+            
+            // Check for suspiciously small list with high revenue
+            if (listSize > 0 && listSize < 500 && monthlyRevenue > 100000) {
+                warnings.push("Very high revenue with small list size. Please confirm these figures are accurate.");
+            }
+            
+            return warnings;
+        }
+
+        function showWarnings(warnings) {
+            const banner = document.getElementById('warningBanner');
+            if (warnings.length > 0) {
+                banner.className = 'warning-banner';
+                banner.style.display = 'block';
+                banner.innerHTML = '<strong>⚠️ Please Review:</strong><br>' + warnings.map(w => '• ' + w).join('<br>');
+            } else {
+                banner.style.display = 'none';
+            }
+        }
 
         function calculateScore() {
-            // Get all checkboxes
-            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-            const listCheckboxes = Array.from(allCheckboxes).slice(0, 7);
-            const tacticsCheckboxes = Array.from(allCheckboxes).slice(7, 12);
-            const automationCheckboxes = Array.from(allCheckboxes).slice(12, 16);
-            const consistencyCheckboxes = Array.from(allCheckboxes).slice(16, 17);
-
             // Calculate scores
-            const listScore = listCheckboxes.filter(cb => cb.checked).length;
-            const tacticsScore = tacticsCheckboxes.filter(cb => cb.checked).length;
-            const automationScore = automationCheckboxes.filter(cb => cb.checked).length;
-            const consistencyScore = consistencyCheckboxes.filter(cb => cb.checked).length;
-            const totalScore = listScore + tacticsScore + automationScore + consistencyScore;
+            const listScore = getListScore();
+            const tacticsScore = getTacticsScore();
+            const automationScore = getAutomationScore();
+            const consistencyScore = getConsistencyScore();
+            const totalScore = getTotalScore();
 
             // Update display
             document.getElementById('totalScore').textContent = `${totalScore}/17`;
@@ -939,8 +1100,33 @@ Generated by CRO28 Email Audit Tool`;
             document.getElementById('automationScore').textContent = `${automationScore}/4`;
             document.getElementById('consistencyScore').textContent = `${consistencyScore}/1`;
 
-            // Generate recommendations
-            generateRecommendations(listScore, tacticsScore, automationScore, consistencyScore, totalScore);
+            // Get inputs
+            const currency = document.getElementById('currency').value;
+            const listSize = parseInt(document.getElementById('listSize').value) || 0;
+            const monthlyRevenue = parseRevenue(document.getElementById('monthlyRevenue').value);
+
+            // Validate inputs and show warnings if needed
+            const warnings = validateInputs(listSize, monthlyRevenue);
+            showWarnings(warnings);
+
+            // Determine confidence level
+            let confidenceLevel = 'low';
+            let confidenceText = 'Limited data';
+            
+            if (monthlyRevenue > 0 && listSize > 1000) {
+                confidenceLevel = 'high';
+                confidenceText = 'High confidence';
+            } else if (monthlyRevenue > 0 || listSize > 500) {
+                confidenceLevel = 'medium';
+                confidenceText = 'Medium confidence';
+            }
+
+            const badge = document.getElementById('confidenceBadge');
+            badge.className = 'confidence-badge confidence-' + confidenceLevel;
+            badge.textContent = confidenceText;
+
+            // Generate recommendations with safer calculations
+            generateRecommendations(listScore, tacticsScore, automationScore, consistencyScore, totalScore, listSize, monthlyRevenue, currency, confidenceLevel);
         }
 
         function getIcon(type) {
@@ -957,73 +1143,134 @@ Generated by CRO28 Email Audit Tool`;
             return icons[type] || icons['check'];
         }
 
-        function generateRecommendations(list, tactics, automation, consistency, total) {
+        function generateRecommendations(list, tactics, automation, consistency, total, listSize, monthlyRevenue, currency, confidenceLevel) {
             const recommendations = [];
             const working = [];
-            const gapScore = 17 - total;
-            const opportunityPerGap = 500;
-            const monthlyOpp = gapScore * opportunityPerGap;
+
+            // CONSERVATIVE CALCULATION MODEL - Safer benchmarks
+            let monthlyOpp = 0;
+            
+            if (monthlyRevenue > 0) {
+                // Calculate CURRENT email contribution based on audit score
+                // Conservative range: 12-25% (instead of 15-30%)
+                const currentEmailContribution = 0.12 + (total / 17 * 0.13);
+                const currentEmailRevenue = monthlyRevenue * currentEmailContribution;
+                
+                // Conservative benchmark: 25-30% for well-optimized programs (instead of 35%)
+                // Use 30% only for high scores, 25% for lower scores
+                const bestPracticeContribution = 0.25 + (total / 17 * 0.05);
+                const potentialEmailRevenue = monthlyRevenue * bestPracticeContribution;
+                
+                // Opportunity = gap (but cap at reasonable maximum)
+                monthlyOpp = Math.max(0, potentialEmailRevenue - currentEmailRevenue);
+                
+                // Apply confidence multiplier - reduce estimates for lower confidence
+                if (confidenceLevel === 'medium') {
+                    monthlyOpp *= 0.85; // Reduce by 15%
+                } else if (confidenceLevel === 'low') {
+                    monthlyOpp *= 0.70; // Reduce by 30%
+                }
+                
+            } else if (listSize > 0) {
+                // Fallback: Conservative revenue per subscriber estimates
+                // Current: $0.80-$2.00/month based on score (was $1.00-$2.50)
+                const currentRevenuePerSub = 0.8 + (total / 17 * 1.2);
+                const currentEmailRevenue = listSize * currentRevenuePerSub;
+                
+                // Best practice: $2.50/month (was $3.00) - more conservative
+                const potentialEmailRevenue = listSize * 2.5;
+                
+                // Opportunity = gap
+                monthlyOpp = Math.max(0, potentialEmailRevenue - currentEmailRevenue);
+                
+                // Apply confidence reduction for list-only data
+                monthlyOpp *= 0.75; // Reduce by 25% since we don't have revenue data
+                
+            } else {
+                // No data: Very conservative estimate
+                const gapScore = 17 - total;
+                monthlyOpp = gapScore * 200; // Reduced from $300 to $200 per gap
+                
+                // Mark as very low confidence
+                monthlyOpp *= 0.6;
+            }
+
+            // Cap opportunity at reasonable maximum based on inputs
+            if (monthlyRevenue > 0) {
+                // Opportunity shouldn't exceed 50% of current revenue
+                const maxOpp = monthlyRevenue * 0.5;
+                monthlyOpp = Math.min(monthlyOpp, maxOpp);
+            } else if (listSize > 0) {
+                // Cap at $5/subscriber/month as absolute maximum
+                const maxOpp = listSize * 5;
+                monthlyOpp = Math.min(monthlyOpp, maxOpp);
+            }
+
             const annualOpp = monthlyOpp * 12;
 
-            // Update prominent dollar amounts
-            document.getElementById('opportunityAmount').textContent = '$' + monthlyOpp.toLocaleString();
-            document.getElementById('annualAmount').textContent = annualOpp.toLocaleString();
-
-            // Calculate dollar amounts per channel (based on typical distribution)
-            const cartValue = Math.round(monthlyOpp * 0.25);
-            const welcomeValue = Math.round(monthlyOpp * 0.30);
-            const campaignValue = Math.round(monthlyOpp * 0.35);
-            const winbackValue = Math.round(monthlyOpp * 0.10);
+            // Update prominent dollar amounts with currency formatting
+            document.getElementById('opportunityAmount').textContent = formatCurrency(monthlyOpp, currency);
+            document.getElementById('annualAmount').textContent = formatCurrency(annualOpp, currency);
 
             // What's working
-            if (list >= 3) working.push('Growing email list with multiple tactics');
+            if (list >= 4) working.push('Strong list growth strategy');
+            if (list >= 2 && list < 4) working.push('Growing email list with multiple tactics');
             if (tactics >= 3) working.push('Sending variety of email types');
-            if (automation >= 2) working.push('Basic automations in place');
+            if (automation >= 3) working.push('Strong automation setup');
+            if (automation >= 2 && automation < 3) working.push('Basic automations in place');
             if (consistency >= 1) working.push('Sending emails consistently');
 
-            // What's missing (with dollar amounts)
-            if (automation < 2) {
-                recommendations.push({ 
-                    icon: 'cart', 
-                    text: `Cart abandonment + Welcome series → $${(cartValue + welcomeValue).toLocaleString()}/month` 
-                });
-            } else {
-                if (automation < 4) {
-                    recommendations.push({ 
-                        icon: 'automation', 
-                        text: `Complete all 4 automation flows → $${winbackValue.toLocaleString()}/month` 
-                    });
-                }
+            // Priority recommendations - allocate proportionally
+            const missingCategories = [];
+            
+            // Automations - highest impact
+            if (automation === 0) {
+                missingCategories.push({ type: 'cart', weight: 35, text: 'Implement cart abandonment + welcome series' });
+            } else if (automation === 1) {
+                missingCategories.push({ type: 'cart', weight: 30, text: 'Add cart abandonment or welcome series' });
+            } else if (automation < 4) {
+                missingCategories.push({ type: 'automation', weight: 15, text: 'Complete remaining automation flows' });
             }
-
-            if (list < 3) {
-                const listValue = Math.round(monthlyOpp * 0.20);
-                recommendations.push({ 
-                    icon: 'popup', 
-                    text: `Pop-up + product page capture → $${listValue.toLocaleString()}/month` 
-                });
-            }
-
+            
+            // Consistency - critical foundation
             if (consistency === 0) {
-                recommendations.push({ 
-                    icon: 'email', 
-                    text: `Weekly email campaigns → $${campaignValue.toLocaleString()}/month` 
-                });
+                missingCategories.push({ type: 'email', weight: 25, text: 'Start weekly email campaigns' });
             }
-
-            if (tactics < 3) {
-                const varietyValue = Math.round(monthlyOpp * 0.15);
-                recommendations.push({ 
-                    icon: 'variety', 
-                    text: `Email variety (plain-text, content, flash sales) → $${varietyValue.toLocaleString()}/month` 
-                });
+            
+            // List Growth
+            if (list === 0) {
+                missingCategories.push({ type: 'popup', weight: 25, text: 'Implement basic list growth tactics (pop-up)' });
+            } else if (list < 3) {
+                missingCategories.push({ type: 'popup', weight: 18, text: 'Expand list growth strategy' });
+            } else if (list < 6) {
+                missingCategories.push({ type: 'growth', weight: 12, text: 'Add advanced list growth tactics' });
             }
-
-            if (list < 5) {
-                const qrValue = Math.round(monthlyOpp * 0.10);
-                recommendations.push({ 
-                    icon: 'qr', 
-                    text: `QR codes + social DM automation → $${qrValue.toLocaleString()}/month` 
+            
+            // Tactics - improves engagement
+            if (tactics < 2) {
+                missingCategories.push({ type: 'variety', weight: 15, text: 'Add email variety (content, plain-text, flash sales)' });
+            } else if (tactics < 4) {
+                missingCategories.push({ type: 'variety', weight: 10, text: 'Round out email tactics' });
+            }
+            
+            // Advanced tactics
+            if (list >= 3 && list < 7) {
+                missingCategories.push({ type: 'qr', weight: 8, text: 'Add QR codes and social automation' });
+            }
+            
+            // Calculate total weight and normalize
+            const totalWeight = missingCategories.reduce((sum, cat) => sum + cat.weight, 0);
+            
+            if (totalWeight > 0 && monthlyOpp > 0) {
+                missingCategories.forEach(cat => {
+                    const percentage = cat.weight / totalWeight;
+                    const value = Math.round(monthlyOpp * percentage);
+                    if (value > 0) { // Only show if there's actual value
+                        recommendations.push({
+                            icon: cat.type,
+                            text: `${cat.text} → ${formatCurrency(value, currency)}/month`
+                        });
+                    }
                 });
             }
 
@@ -1047,9 +1294,12 @@ Generated by CRO28 Email Audit Tool`;
                     `<div class="priority-item">${getIcon(rec.icon)}<div class="priority-text">${rec.text}</div></div>`
                 ).join('');
             } else {
-                recList.innerHTML = `<div class="priority-item">${getIcon('check')}<div class="priority-text">Strong email program. Focus on optimization and testing.</div></div>`;
+                recList.innerHTML = `<div class="priority-item">${getIcon('check')}<div class="priority-text">Excellent email program! Focus on optimization, A/B testing, and advanced segmentation.</div></div>`;
             }
         }
+
+        // Initial calculation on page load
+        calculateScore();
     </script>
 </body>
 </html>

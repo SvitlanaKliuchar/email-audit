@@ -1,0 +1,164 @@
+Step,Calculation Component,Formula,Example (Score 8/17),Example ($50k revenue),Example (5000 list),Notes
+1,Get Audit Score,Sum of all checked boxes (0-17),8 checkboxes checked,8/17 = 47% complete,8/17 = 47% complete,Foundation for all calculations
+2,Get Monthly Revenue,Parse user input (remove $ £ commas),User enters "$50,000",Parse to 50000,Parse to 50000,Clean numeric value
+3,Get List Size,Parse user input (integer),User enters "5,000",Parse to 5000,Parse to 5000,Clean numeric value
+4,Validate Revenue/List Ratio,monthlyRevenue / listSize,50000 / 5000 = $10/sub,Flag if >$50 or <$0.10,Flag if >$50 or <$0.10,Sanity check for data errors
+
+5A,Calculate Current Email % (if revenue provided),0.12 + (score/17 × 0.13),0.12 + (8/17 × 0.13) = 0.181,"18.1% of revenue from email currently",N/A,Score-based performance estimate
+5B,Calculate Current Email Revenue (if revenue provided),monthlyRevenue × currentEmailPercent,50000 × 0.181 = $9050,$9050 current email revenue,N/A,Dollar value of current email
+5C,Calculate Current Revenue/Sub (if list only),0.8 + (score/17 × 1.2),0.8 + (8/17 × 1.2) = $1.365/sub,N/A,$1.365 per subscriber/month,Fallback when no revenue
+5D,Calculate Current Email Revenue (if list only),listSize × revenuePerSub,5000 × 1.365 = $6825,N/A,$6825 estimated current,Estimate from list size
+5E,Calculate Current Email Revenue (no data),gapScore × 200,9 gaps × 200 = $1800,N/A if revenue given,N/A if list given,Last resort estimate
+
+6A,Calculate Best Practice % (if revenue provided),0.25 + (score/17 × 0.05),0.25 + (8/17 × 0.05) = 0.274,"27.4% potential with optimization",N/A,Conservative best-practice target
+6B,Calculate Potential Email Revenue (if revenue provided),monthlyRevenue × bestPracticePercent,50000 × 0.274 = $13700,$13700 potential email revenue,N/A,What's achievable
+6C,Calculate Potential Revenue/Sub (if list only),Fixed at $2.50/subscriber/month,$2.50/sub,N/A,$2.50 per subscriber/month,Conservative best-practice
+6D,Calculate Potential Email Revenue (if list only),listSize × potentialRevenuePerSub,5000 × 2.50 = $12500,N/A,$12500 potential,Target from list size
+
+7,Calculate Raw Opportunity,potentialEmailRevenue - currentEmailRevenue,$13700 - $9050 = $4650,$4650 monthly opportunity,$12500 - $6825 = $5675,Gap between current and potential
+8,Determine Confidence Level,"High: revenue + list>1000; Medium: revenue OR list>500; Low: neither",Medium (has revenue but list<1000),High confidence,High confidence,Data quality assessment
+
+9A,Apply Confidence Multiplier - High,opportunity × 1.0 (no reduction),$4650 × 1.0 = $4650,$4650 (no reduction),$5675 × 1.0 = $5675,Full estimate for strong data
+9B,Apply Confidence Multiplier - Medium,opportunity × 0.85 (15% reduction),$4650 × 0.85 = $3953,$3953 after confidence adj,N/A,Conservative for medium data
+9C,Apply Confidence Multiplier - Low,opportunity × 0.70 (30% reduction),$4650 × 0.70 = $3255,$3255 after confidence adj,N/A,Very conservative for weak data
+9D,Apply List-Only Penalty (if no revenue),opportunity × 0.75 (additional 25% reduction),N/A (has revenue),N/A,$5675 × 0.75 = $4256,Extra caution without revenue
+
+10A,Apply Revenue Safety Cap,MIN(opportunity, monthlyRevenue × 0.50),MIN($3953, $50000 × 0.50),MIN($3953, $25000) = $3953,MIN($4256, unknown × 0.50),Can't exceed 50% of revenue
+10B,Apply List Safety Cap (if no revenue cap),MIN(opportunity, listSize × 5),N/A (has revenue),N/A,MIN($4256, 5000 × 5) = $4256,Can't exceed $5/subscriber
+
+11,Final Monthly Opportunity,Result after all adjustments,$3953,$3953 monthly opportunity,$4256 monthly opportunity,Conservative final number
+12,Calculate Annual Opportunity,monthlyOpportunity × 12,$3953 × 12 = $47436,$47436 annual opportunity,$51072 annual opportunity,Simple annualization
+
+13,Determine Missing Categories by Weight,See detailed breakdown below,See below,See below,See below,Proportional allocation begins
+
+14A,Automations - Missing All (0/4),Weight: 35% of total opportunity,Score has 2/4 → skip,Skip (has 2 automations),Skip (has 2 automations),Only if automation = 0
+14B,Automations - Missing Most (1/4),Weight: 30% of total opportunity,Score has 2/4 → skip,Skip (has 2 automations),Skip (has 2 automations),Only if automation = 1
+14C,Automations - Missing Some (2-3/4),Weight: 15% of total opportunity,Score has 2/4 → APPLY,15% × $3953 = $593,15% × $4256 = $638,Applies in this example
+14D,Consistency - Missing (0/1),Weight: 25% of total opportunity,Score has 1/1 → skip,Skip (has consistency),Skip (has consistency),Only if no weekly emails
+14E,List Growth - None (0/7),Weight: 25% of total opportunity,Score has 3/7 → skip,Skip (has 3 tactics),Skip (has 3 tactics),Only if list = 0
+14F,List Growth - Minimal (1-2/7),Weight: 18% of total opportunity,Score has 3/7 → skip,Skip (has 3 tactics),Skip (has 3 tactics),Only if list = 1-2
+14G,List Growth - Some (3-5/7),Weight: 12% of total opportunity,Score has 3/7 → APPLY,12% × $3953 = $474,12% × $4256 = $511,Applies in this example
+14H,Email Tactics - Few (0-1/5),Weight: 15% of total opportunity,Score has 2/5 → skip,Skip (has 2 tactics),Skip (has 2 tactics),Only if tactics < 2
+14I,Email Tactics - Some (2-3/5),Weight: 10% of total opportunity,Score has 2/5 → APPLY,10% × $3953 = $395,10% × $4256 = $426,Applies in this example
+14J,Advanced List Growth (if 3-6/7),Weight: 8% of total opportunity,Score has 3/7 → APPLY,8% × $3953 = $316,8% × $4256 = $340,Applies in this example
+
+15,Sum of Recommendation Weights,Add all applicable weights,15% + 12% + 10% + 8% = 45%,45% total weight,45% total weight,Should sum to reasonable total
+16,Normalize to 100%,Divide each weight by total weight,15/45 = 33.3% (automations),Each category as % of total,Each category as % of total,Ensures recommendations sum to 100%
+
+17A,Recommendation 1: Automations,33.3% of opportunity,$3953 × 0.333 = $1316,"Complete remaining automation flows → $1,316/mo","Complete remaining automation flows → $1,417/mo",Largest allocation
+17B,Recommendation 2: List Growth,26.7% of opportunity,$3953 × 0.267 = $1055,"Expand list growth strategy → $1,055/mo","Expand list growth strategy → $1,136/mo",Second priority
+17C,Recommendation 3: Email Variety,22.2% of opportunity,$3953 × 0.222 = $878,"Round out email tactics → $878/mo","Round out email tactics → $945/mo",Third priority
+17D,Recommendation 4: Advanced Growth,17.8% of opportunity,$3953 × 0.178 = $704,"Add QR codes + social automation → $704/mo","Add QR codes + social automation → $758/mo",Fourth priority
+
+18,Verify Sum,Add all recommendations,1316 + 1055 + 878 + 704 = 3953,"$3,953 (matches total)",1417 + 1136 + 945 + 758 = 4256,Mathematical proof of no double-counting
+19,Format for Display (USD),Add $ and commas,"$3,953","$3,953","$4,256",User-friendly presentation
+20,Format for Display (GBP),Add £ and commas,"£3,953","£3,953","£4,256",If GBP selected
+
+ALTERNATIVE SCENARIO 1: Perfect Score (17/17),,,,,
+Step,Component,Formula,Example,Result,Notes
+A1,Get Score,All boxes checked,17/17,17 out of 17,Perfect implementation
+A2,Calculate Current Email %,0.12 + (17/17 × 0.13),0.12 + 0.13 = 0.25,25% currently,Already at good level
+A3,Calculate Best Practice %,0.25 + (17/17 × 0.05),0.25 + 0.05 = 0.30,30% potential,Only 5% upside left
+A4,Calculate Opportunity (if $50k revenue),$50000 × (0.30 - 0.25),$50000 × 0.05 = $2500,$2500 monthly opportunity,Small gap remaining
+A5,Show Message,"Excellent program! Focus on optimization, A/B testing","No specific recommendations, just praise",Positive reinforcement,Acknowledge excellence
+
+ALTERNATIVE SCENARIO 2: No Data Provided (0 score),,,,,
+Step,Component,Formula,Example,Result,Notes
+B1,Get Score,No boxes checked,0/17,0 out of 17,Starting from scratch
+B2,No Revenue or List Size,Both fields empty,0 and 0,No data,Ultra-conservative mode
+B3,Calculate Gap Score,17 - 0,17 gaps,17 missing tactics,All opportunities available
+B4,Base Calculation,gapScore × 200,17 × 200 = $3400,$3400 base,Generic estimate
+B5,Apply Low Confidence,3400 × 0.70,$3400 × 0.70,$2380 monthly opportunity,Heavy discount for uncertainty
+B6,Show Low Confidence Badge,"Red badge: ""Limited data""","Warns user estimate is weak",Visual warning,Manages expectations
+
+ALTERNATIVE SCENARIO 3: Very Low Score (2/17) with Large Revenue,,,,,
+Step,Component,Formula,Example ($200k revenue),Result,Notes
+C1,Get Score,Only 2 boxes checked,2/17,2 out of 17,Poor implementation
+C2,Calculate Current Email %,0.12 + (2/17 × 0.13),0.12 + 0.015 = 0.135,13.5% currently,Low performance
+C3,Calculate Current Revenue,200000 × 0.135,$200000 × 0.135,$27000 current,Significant base
+C4,Calculate Best Practice %,0.25 + (2/17 × 0.05),0.25 + 0.006 = 0.256,25.6% potential,Large gap
+C5,Calculate Potential Revenue,200000 × 0.256,$200000 × 0.256,$51200 potential,Much higher ceiling
+C6,Calculate Raw Opportunity,51200 - 27000,51200 - 27000 = $24200,$24200 raw opportunity,Huge potential
+C7,Apply Revenue Safety Cap,MIN(24200, 200000 × 0.50),MIN($24200, $100000),$24200 (within cap),Passes safety check
+C8,Apply Confidence (has revenue),24200 × 0.85,$24200 × 0.85,$20570 monthly opportunity,Conservative reduction
+C9,Show Recommendations,"All major categories missing: automations (35%), consistency (25%), list growth (25%), tactics (15%)","4-5 priority recommendations shown",Total = $20570,Comprehensive improvement plan
+
+EDGE CASE: Validation Warning Triggered,,,,,
+Step,Component,Condition,Example,Action,Result
+D1,Check Revenue per Subscriber,If revenue/list > $50,100000 / 500 = $200/sub,Trigger warning,Yellow banner appears
+D2,Warning Message,"Revenue per subscriber seems unusually high. Please verify.",Shows in banner,User sees warning,Prompts data review
+D3,Continue Calculation,Doesn't block calculation,Still calculates opportunity,Shows estimate,Non-blocking validation
+D4,Recommendation to User,Review data before client presentation,Check for data entry errors,Catch mistakes early,Quality assurance
+
+CONFIDENCE LEVEL DETERMINATION LOGIC,,,,,
+Condition,List Size,Revenue Provided,Confidence Level,Multiplier,Badge Color
+Both strong data,>1000,Yes,High,1.0 (no reduction),Green
+Revenue only,<1000,Yes,Medium,0.85 (15% reduction),Yellow
+List only (large),>500,No,Medium,0.85 × 0.75 = 0.6375,Yellow
+List only (small),<500,No,Low,0.70 × 0.75 = 0.525,Red
+No data,0,No,Low,0.70 (of generic estimate),Red
+
+WEIGHT ALLOCATION DECISION TREE,,,,,
+Category,Condition,Weight %,Logic,Priority,Example Text
+Automations,0/4 automations,35%,Missing everything - highest impact,1st,"Implement cart abandonment + welcome series"
+Automations,1/4 automations,30%,Missing most - very high impact,1st,"Add cart abandonment or welcome series"
+Automations,2-3/4 automations,15%,Missing some - moderate impact,Medium,"Complete remaining automation flows"
+Automations,4/4 automations,0%,Nothing missing,N/A,No recommendation
+Consistency,0/1 weekly emails,25%,Critical foundation missing,1st or 2nd,"Start weekly email campaigns"
+Consistency,1/1 weekly emails,0%,Has consistency,N/A,No recommendation
+List Growth,0/7 tactics,25%,No list building at all,1st or 2nd,"Implement basic list growth tactics"
+List Growth,1-2/7 tactics,18%,Minimal list building,2nd or 3rd,"Expand list growth strategy"
+List Growth,3-5/7 tactics,12%,Some list building,3rd or 4th,"Add advanced list growth tactics"
+List Growth,6-7/7 tactics,0%,Strong list building,N/A,No recommendation
+Email Tactics,0-1/5 tactics,15%,Very limited variety,3rd,"Add email variety (content, plain-text, flash sales)"
+Email Tactics,2-3/5 tactics,10%,Some variety,4th,"Round out email tactics"
+Email Tactics,4-5/5 tactics,0%,Good variety,N/A,No recommendation
+Advanced,3-6/7 list tactics,8%,Room for advanced tactics,4th or 5th,"Add QR codes and social automation"
+Advanced,0-2 or 7/7,0%,Too early or complete,N/A,No recommendation
+
+SAFETY CAPS DECISION LOGIC,,,,,
+Cap Type,Formula,Threshold,Reason,Example ($100k revenue),Example (10k list)
+Revenue-Based Cap,opportunity < revenue × 0.50,50% of current revenue,No single initiative doubles business,Opportunity capped at $50k,N/A
+List-Based Cap,opportunity < listSize × 5,$5 per subscriber/month,Extremely high bar,N/A,Opportunity capped at $50k
+Combined Check,Apply whichever is relevant,Use revenue cap if revenue provided; else list cap,Prevents any absurd projections,Uses revenue cap,Uses list cap
+No Cap Scenario,Very low revenue or small list,Caps may not trigger,Opportunity might be below thresholds,If opp = $5k and cap = $50k then no reduction,If opp = $3k and cap = $50k then no reduction
+
+CURRENCY FORMATTING LOGIC,,,,,
+Currency Code,Symbol,Position,Example Amount,Formatted Output,Notes
+USD,$,Before,12345,"$12,345",Standard US format
+GBP,£,Before,12345,"£12,345",Standard UK format
+Future: EUR,€,After (varies by locale),12345,"12.345 €" or "€12,345",Not yet implemented
+Future: CAD,$,Before,12345,"$12,345",Not yet implemented
+
+CALCULATION VERIFICATION CHECKLIST,,,,,
+Check,What to Verify,How to Verify,Pass Condition,Fail Condition,Action if Fail
+1,Recommendations sum to total,Add all recommendation values,Sum equals opportunity within $1,Sum differs by >$1,Fix normalization logic
+2,Percentages are reasonable,Review current and best-practice %,12-25% current; 25-30% best,<12% or >35%,Adjust benchmarks
+3,Revenue/sub is realistic,Calculate monthly rev / list size,$0.50-$10 per subscriber,<$0.10 or >$50,Show validation warning
+4,Opportunity < revenue,Check opportunity vs input revenue,Opportunity ≤ 50% of revenue,Opportunity > 50%,Apply revenue cap
+5,Weights sum properly,Add all category weights,Close to 100% before normalization,Way off from 100%,Review weight logic
+6,Confidence badge shows,Visual check,Badge appears with color,Badge missing,Fix UI logic
+7,Currency formatting,Check for proper symbols,$ or £ appears correctly,Wrong symbol or position,Fix currency function
+
+EXAMPLE WALKTHROUGH: Typical Audit,,,,,
+Input: Brand with $80k monthly revenue; 8000 list; Score 11/17 (automation 3/4; tactics 3/5; list 4/7; consistency 1/1),,,,,
+Step,Calculation,Result,Explanation,,
+1,Parse inputs,"Revenue: $80000, List: 8000, Score: 11/17",Clean data,,
+2,Validate,80000/8000 = $10/sub,Within normal range ($0.50-50),,
+3,Determine confidence,Has revenue + list>1000 = HIGH,High confidence = 1.0 multiplier,,
+4,Current email %,0.12 + (11/17 × 0.13) = 0.204,20.4% of revenue from email currently,,
+5,Current email revenue,80000 × 0.204 = $16320,$16320 current monthly email revenue,,
+6,Best practice %,0.25 + (11/17 × 0.05) = 0.282,28.2% potential with optimization,,
+7,Potential email revenue,80000 × 0.282 = $22560,$22560 potential monthly email revenue,,
+8,Raw opportunity,22560 - 16320 = $6240,$6240 monthly opportunity,,
+9,Apply confidence,6240 × 1.0 = $6240,No reduction (high confidence),,
+10,Check caps,"MIN(6240, 80000×0.5) = MIN(6240, 40000)",$6240 (well within cap),,
+11,Final monthly,6240,$6240/month,,
+12,Annual opportunity,6240 × 12 = $74880,$74880/year,,
+13,Identify gaps,"Missing: 1 automation (need 4th), 2 tactics (need 4th & 5th), 3 list tactics (need 5th-7th)","3 recommendation areas",,
+14,Assign weights,"Automation 15%, Tactics 10%, List 12% = 37% total","Normalize to 100%",,
+15,Recommendation 1 (normalized),"Automation: 15/37 = 40.5% of $6240","Complete 4th automation flow → $2,527/mo",,
+16,Recommendation 2 (normalized),"List: 12/37 = 32.4% of $6240","Expand list growth → $2,022/mo",,
+17,Recommendation 3 (normalized),"Tactics: 10/37 = 27.0% of $6240","Add remaining email tactics → $1,685/mo",,
+18,Verify sum,"2527 + 2022 + 1685 = 6234","Within $6 (rounding) = ✓",,
+19,Format & display,"$6,240/month; $74,880/year; 3 recommendations","Present to client",,"
